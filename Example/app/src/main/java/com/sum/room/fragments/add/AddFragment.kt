@@ -11,8 +11,8 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.sum.room.R
-import com.sum.room.User
-import com.sum.room.UserViewModel
+import com.sum.room.model.User
+import com.sum.room.viewmodel.UserViewModel
 import com.sum.room.databinding.FragmentAddBinding
 
 

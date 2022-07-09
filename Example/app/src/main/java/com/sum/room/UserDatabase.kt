@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import com.sum.room.model.User
 
 //TODO:1 Create database
 @Database(entities = [User::class],version =1,exportSchema = false)

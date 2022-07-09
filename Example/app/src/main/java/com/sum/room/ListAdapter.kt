@@ -2,10 +2,15 @@ package com.sum.room
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.EditText
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.navigation.Navigation
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.sum.room.databinding.CustomRowBinding
+import com.sum.room.fragments.list.ListFragment
+import com.sum.room.fragments.list.ListFragmentDirections
+import com.sum.room.model.User
 
 class ListAdapter : RecyclerView.Adapter<ListAdapter.ListHolder>() {
     private var userList = emptyList<User>()
@@ -27,11 +32,21 @@ class ListAdapter : RecyclerView.Adapter<ListAdapter.ListHolder>() {
         val customName = holder.itemView.findViewById<TextView>(R.id.textCustomName)
         val customSurname = holder.itemView.findViewById<TextView>(R.id.textCustomSurname)
         val customAge =holder.itemView.findViewById<TextView>(R.id.textCustomAge)
+        val rowLayout = holder.itemView.findViewById<ConstraintLayout>(R.id.rowLayout)
 
         textNumber.text = currentItem.id.toString()
         customName.text = currentItem.firstName
         customSurname.text = currentItem.lastName
         customAge.text = currentItem.age.toString()
+
+        rowLayout.setOnClickListener {
+            val action =  ListFragmentDirections.actionListFragmentToUpdateFragment(currentItem)
+            holder.itemView.findNavController().navigate(action)
+        }
+
+
+
+
 
 
 
