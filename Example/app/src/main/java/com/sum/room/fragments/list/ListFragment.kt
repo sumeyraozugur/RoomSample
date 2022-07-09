@@ -52,6 +52,7 @@ class ListFragment : Fragment() {
         //Add menu
         val menuHost: MenuHost = requireActivity()
         Log.v("menu", "insede menu")
+
         menuHost.addMenuProvider(object : MenuProvider {
             override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
                 // Add menu items here

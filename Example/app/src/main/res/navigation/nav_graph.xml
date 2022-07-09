@@ -29,7 +29,7 @@
     <fragment
         android:id="@+id/updateFragment"
         android:name="com.sum.room.fragments.update.UpdateFragment"
-        android:label="fragment_update"
+        android:label="Update"
         tools:layout="@layout/fragment_update" >
         <action
             android:id="@+id/action_updateFragment_to_listFragment"
