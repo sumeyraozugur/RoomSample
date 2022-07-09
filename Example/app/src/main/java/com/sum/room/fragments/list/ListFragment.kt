@@ -1,10 +1,14 @@
 package com.sum.room.fragments.list
 
+import android.app.AlertDialog
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.util.Log
+import android.view.*
+import android.widget.Toast
+import androidx.core.view.MenuHost
+import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -44,6 +48,30 @@ class ListFragment : Fragment() {
         binding.floatingActionButton.setOnClickListener {
             findNavController().navigate(R.id.action_listFragment_to_addFragment)
         }
+
+        //Add menu
+        val menuHost: MenuHost = requireActivity()
+        Log.v("menu", "insede menu")
+        menuHost.addMenuProvider(object : MenuProvider {
+            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+                // Add menu items here
+                menuInflater.inflate(R.menu.delete_menu, menu)
+            }
+
+            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+                // Handle the menu selection
+                return when (menuItem.itemId) {
+                    R.id.menu_delete -> {
+                        deleteAllUsers()
+                        true
+                    }
+                    else -> false
+                }
+            }
+
+
+        }, viewLifecycleOwner, Lifecycle.State.RESUMED)
+
         //Recyclerview
         val adapter = ListAdapter()
         val recyclerView = binding.recyclerView
@@ -56,6 +84,23 @@ class ListFragment : Fragment() {
             adapter.setData(user)
 
         })
+    }
+
+    private fun deleteAllUsers() {
+        val builder = AlertDialog.Builder(requireContext())
+        builder.setPositiveButton("Yes") { _, _ ->
+            mUserViewModel.deleteAllUsers()
+            Toast.makeText(requireContext(),
+                "Successfully removed everything",
+                Toast.LENGTH_SHORT).show()
+
+
+        }
+
+        builder.setNegativeButton("No") { _, _ -> }
+        builder.setTitle("Delete everything?")
+        builder.setMessage("Are you sure you want to delete everything?")
+        builder.create().show()
     }
 
 
