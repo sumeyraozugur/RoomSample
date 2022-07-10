@@ -36,7 +36,9 @@ A repository class abstracts access to multiple data sources. The repository is 
 The ViewModel's role is to provide data to the UI and survive configuration changes. A ViewModel acts as a communication center between the Repository and the UI
 
 
+<h3 align="center">:orange_heart: Output :orange_heart: </h3>
 
+![output](https://user-images.githubusercontent.com/41166029/178142601-44f0306c-6bfe-4e76-bb14-5603a460b371.png)
 
 
 
