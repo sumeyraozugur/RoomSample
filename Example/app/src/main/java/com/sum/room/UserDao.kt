@@ -20,4 +20,7 @@ interface UserDao {
 
     @Query("SELECT * FROM user_table ORDER BY id ASC")
     fun readAllData(): LiveData<List<User>>
+
+    @Query("SELECT * FROM user_table WHERE firstName  like '%' || :searchQuery || '%'  ") //WHERE firstName  like '%' || :searchQuery || lastName like '%'
+    suspend fun searchDatabase(searchQuery:String) : List<User>
 }

@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.*
 import android.widget.Toast
+import androidx.appcompat.widget.SearchView
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
@@ -53,10 +54,12 @@ class ListFragment : Fragment() {
         val menuHost: MenuHost = requireActivity()
         Log.v("menu", "insede menu")
 
-        menuHost.addMenuProvider(object : MenuProvider {
+        menuHost.addMenuProvider(object : MenuProvider, SearchView.OnQueryTextListener {
             override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
                 // Add menu items here
+                menuInflater.inflate(R.menu.search_menu,menu)
                 menuInflater.inflate(R.menu.delete_menu, menu)
+
             }
 
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
@@ -66,8 +69,32 @@ class ListFragment : Fragment() {
                         deleteAllUsers()
                         true
                     }
+                    R.id.ic_search->{
+
+                        val searchView = menuItem.actionView as SearchView
+                        searchView.setOnQueryTextListener(this)
+                        true
+                    }
+
                     else -> false
                 }
+            }
+
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                query?.let {
+                    mUserViewModel.searchDatabase(query)
+                    Log.v("Query",query)
+                }
+
+                return true
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                newText?.let {
+                    mUserViewModel.searchDatabase(newText)
+                    Log.v("NewText",newText)
+                }
+                return true
             }
 
 
@@ -103,6 +130,12 @@ class ListFragment : Fragment() {
         builder.setMessage("Are you sure you want to delete everything?")
         builder.create().show()
     }
+
+
+
+
+
+
 
 
 }

@@ -1,6 +1,7 @@
 package com.sum.room.viewmodel
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
@@ -45,6 +46,15 @@ class UserViewModel(application: Application): AndroidViewModel(application) {
         viewModelScope.launch(Dispatchers.IO) {
             repository.deleteAllUsers()
         }
+    }
+
+    fun searchDatabase(searchQuery:String){
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.searchDatabase(searchQuery)
+            Log.v("ViewModel",repository.searchDatabase(searchQuery).toString())
+
+        }
+
     }
 
 

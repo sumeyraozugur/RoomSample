@@ -2,8 +2,11 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <!--Order işlemi için Toolbardaki orderInCategory kullan -->
+
     <item android:id="@+id/menu_delete"
         android:title="Delete"
+        android:orderInCategory="2"
         android:icon="@drawable/ic_delete"
         android:iconTint="@color/black"
         app:showAsAction="ifRoom"/>
