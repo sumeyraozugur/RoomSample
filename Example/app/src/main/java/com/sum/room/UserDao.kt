@@ -10,10 +10,10 @@ interface UserDao {
     suspend fun addUser(user: User)
 
     @Update
-    suspend fun updateUser(user:User)
+    suspend fun updateUser(user: User)
 
     @Delete
-    suspend fun deleteUser(user:User)
+    suspend fun deleteUser(user: User)
 
     @Query("DELETE FROM user_table")
     suspend fun deleteAllUsers()
@@ -22,5 +22,5 @@ interface UserDao {
     fun readAllData(): LiveData<List<User>>
 
     @Query("SELECT * FROM user_table WHERE firstName  like '%' || :searchQuery || '%'  ") //WHERE firstName  like '%' || :searchQuery || lastName like '%'
-    suspend fun searchDatabase(searchQuery:String) : List<User>
+    suspend fun searchDatabase(searchQuery: String): List<User>
 }

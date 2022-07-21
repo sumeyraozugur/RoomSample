@@ -1,5 +1,6 @@
 package com.sum.room
 
+import android.text.method.TextKeyListener.clear
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.TextView
@@ -13,7 +14,7 @@ import com.sum.room.fragments.list.ListFragmentDirections
 import com.sum.room.model.User
 
 class ListAdapter : RecyclerView.Adapter<ListAdapter.ListHolder>() {
-    private var userList = emptyList<User>()
+    private var userList = arrayListOf<User>()
 
     class ListHolder(private val binding: CustomRowBinding) : RecyclerView.ViewHolder(binding.root) {
 
@@ -52,10 +53,11 @@ class ListAdapter : RecyclerView.Adapter<ListAdapter.ListHolder>() {
 
 
     }
-    fun setData(user:List<User>){
-        this.userList = user
-        notifyDataSetChanged()
 
+    fun updateList(user: List<User>) {
+        userList.clear()
+        userList.addAll(user)
+        notifyDataSetChanged()
     }
 
 

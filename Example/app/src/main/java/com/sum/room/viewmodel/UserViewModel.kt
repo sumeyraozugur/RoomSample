@@ -4,6 +4,7 @@ import android.app.Application
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.sum.room.UserDatabase
 import com.sum.room.repository.UserRepository
@@ -15,6 +16,7 @@ class UserViewModel(application: Application): AndroidViewModel(application) {
 
     val readAllData: LiveData<List<User>>
     private val repository: UserRepository
+    var searchData= MutableLiveData<List<User>>()
 
     init {
         val userDao = UserDatabase.getDatabase(application).userDao()
@@ -49,8 +51,9 @@ class UserViewModel(application: Application): AndroidViewModel(application) {
     }
 
     fun searchDatabase(searchQuery:String){
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             repository.searchDatabase(searchQuery)
+            searchData = repository.searchData
             Log.v("ViewModel",repository.searchDatabase(searchQuery).toString())
 
         }

@@ -80,9 +80,11 @@ class ListFragment : Fragment() {
                 }
             }
 
+
             override fun onQueryTextSubmit(query: String?): Boolean {
                 query?.let {
                     mUserViewModel.searchDatabase(query)
+
                     Log.v("Query",query)
                 }
 
@@ -107,11 +109,17 @@ class ListFragment : Fragment() {
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
         //UserViewModel
-        mUserViewModel = ViewModelProvider(this).get(UserViewModel::class.java)
-        mUserViewModel.readAllData.observe(viewLifecycleOwner, Observer { user->
-            adapter.setData(user)
+        mUserViewModel = ViewModelProvider(this)[UserViewModel::class.java]
+        mUserViewModel.readAllData.observe(viewLifecycleOwner)
+        { userList->
+            adapter.updateList(userList)
 
-        })
+
+        }
+        mUserViewModel.searchData.observe(viewLifecycleOwner){
+            adapter.updateList(it)
+
+        }
     }
 
     private fun deleteAllUsers() {

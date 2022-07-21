@@ -1,12 +1,18 @@
 package com.sum.room.repository
 
-import android.util.Log
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.sum.room.UserDao
 import com.sum.room.model.User
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+
 
 class UserRepository(private val userDao: UserDao) {
     val readAllData: LiveData<List<User>> = userDao.readAllData()
+    val searchData = MutableLiveData<List<User>>()
 
     suspend fun addUser(user: User) {
         userDao.addUser(user)
@@ -25,10 +31,12 @@ class UserRepository(private val userDao: UserDao) {
     }
 
     suspend fun searchDatabase(searchQuery: String) {
-        userDao.searchDatabase(searchQuery)
-        Log.v("Repo", userDao.searchDatabase(searchQuery).toString())
-
-
+        CoroutineScope(Dispatchers.IO).launch {
+            val tempList = userDao.searchDatabase(searchQuery)
+            withContext(Dispatchers.Main) {
+                searchData.value = tempList
+            }
+        }
     }
 
 }
