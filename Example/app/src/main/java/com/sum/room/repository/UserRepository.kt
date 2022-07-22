@@ -1,5 +1,6 @@
 package com.sum.room.repository
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.sum.room.UserDao
@@ -35,6 +36,7 @@ class UserRepository(private val userDao: UserDao) {
             val tempList = userDao.searchDatabase(searchQuery)
             withContext(Dispatchers.Main) {
                 searchData.value = tempList
+                Log.v("Repo",searchData.value.toString())
             }
         }
     }
