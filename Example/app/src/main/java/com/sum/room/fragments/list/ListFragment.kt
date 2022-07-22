@@ -24,6 +24,7 @@ class ListFragment : Fragment() {
     private var _binding: FragmentListBinding? = null
     private val binding get() = _binding!!
     private lateinit var  mUserViewModel: UserViewModel
+    private lateinit var  adapter: ListAdapter
 
 
 
@@ -46,11 +47,11 @@ class ListFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
 
-        binding.floatingActionButton.setOnClickListener {
+        binding.floatingActionButton.setOnClickListener{
             findNavController().navigate(R.id.action_listFragment_to_addFragment)
         }
 
-        //Add menu
+//Add menu
         val menuHost: MenuHost = requireActivity()
         Log.v("menu", "insede menu")
 
@@ -65,14 +66,14 @@ class ListFragment : Fragment() {
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
                 // Handle the menu selection
                 return when (menuItem.itemId) {
-                    R.id.menu_delete -> {
+                    R.id.menu_delete-> {
                         deleteAllUsers()
                         true
                     }
                     R.id.ic_search->{
 
                         val searchView = menuItem.actionView as SearchView
-                        searchView.setOnQueryTextListener(this)
+                                searchView.setOnQueryTextListener(this)
                         true
                     }
 
@@ -80,11 +81,9 @@ class ListFragment : Fragment() {
                 }
             }
 
-
             override fun onQueryTextSubmit(query: String?): Boolean {
-                query?.let {
+                query?.let{
                     mUserViewModel.searchDatabase(query)
-
                     Log.v("Query",query)
                 }
 
@@ -92,39 +91,38 @@ class ListFragment : Fragment() {
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-                newText?.let {
+                newText?.let{
                     mUserViewModel.searchDatabase(newText)
-                    Log.v("NewText",newText)
+                    mUserViewModel.tempList.observe(viewLifecycleOwner){
+                        adapter.setData(it)
+
+
+                    }
+
                 }
                 return true
             }
 
 
-        }, viewLifecycleOwner, Lifecycle.State.RESUMED)
+        },viewLifecycleOwner, Lifecycle.State.RESUMED)
 
         //Recyclerview
-        val adapter = ListAdapter()
+        adapter = ListAdapter()
         val recyclerView = binding.recyclerView
-        recyclerView.adapter = adapter
-        recyclerView.layoutManager = LinearLayoutManager(requireContext())
+        recyclerView.adapter= adapter
+        recyclerView.layoutManager= LinearLayoutManager(requireContext())
 
         //UserViewModel
         mUserViewModel = ViewModelProvider(this)[UserViewModel::class.java]
-        mUserViewModel.readAllData.observe(viewLifecycleOwner)
-        { userList->
-            adapter.updateList(userList)
-
-
-        }
-        mUserViewModel.searchData.observe(viewLifecycleOwner){
-            adapter.updateList(it)
+        mUserViewModel.readAllData.observe(viewLifecycleOwner){user->
+            adapter.setData(user)
 
         }
     }
 
     private fun deleteAllUsers() {
         val builder = AlertDialog.Builder(requireContext())
-        builder.setPositiveButton("Yes") { _, _ ->
+        builder.setPositiveButton("Yes"){_, _->
             mUserViewModel.deleteAllUsers()
             Toast.makeText(requireContext(),
                 "Successfully removed everything",
@@ -133,7 +131,7 @@ class ListFragment : Fragment() {
 
         }
 
-        builder.setNegativeButton("No") { _, _ -> }
+        builder.setNegativeButton("No"){_, _-> }
         builder.setTitle("Delete everything?")
         builder.setMessage("Are you sure you want to delete everything?")
         builder.create().show()

@@ -16,7 +16,7 @@ class UserViewModel(application: Application): AndroidViewModel(application) {
 
     val readAllData: LiveData<List<User>>
     private val repository: UserRepository
-    var searchData= MutableLiveData<List<User>>()
+    var tempList = MutableLiveData<List<User>>()
 
     init {
         val userDao = UserDatabase.getDatabase(application).userDao()
@@ -25,35 +25,35 @@ class UserViewModel(application: Application): AndroidViewModel(application) {
     }
 
     fun addUser(user: User){
-        viewModelScope.launch ( Dispatchers.IO){
+        viewModelScope.launch( Dispatchers.IO){
             repository.addUser(user)
 
         }
     }
 
     fun updateUser(user: User){
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch(Dispatchers.IO){
             repository.updateUser(user)
         }
     }
 
     fun deleteUser(user: User){
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch(Dispatchers.IO){
             repository.deleteUser(user)
         }
     }
 
 
     fun deleteAllUsers(){
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch(Dispatchers.IO){
             repository.deleteAllUsers()
         }
     }
 
     fun searchDatabase(searchQuery:String){
-        viewModelScope.launch {
-            repository.searchDatabase(searchQuery)
-            searchData = repository.searchData
+        viewModelScope.launch(Dispatchers.IO){
+
+            tempList.postValue(repository.searchDatabase(searchQuery))
             Log.v("ViewModel",repository.searchDatabase(searchQuery).toString())
 
         }
