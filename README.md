@@ -17,6 +17,7 @@
 :balloon: Coroutine </br>
 :balloon: Mvvm</br>
 :balloon: View Model -Live Data </br>
+:balloon: !! Search View is added </br>
 
 <h3 align="center"> :ghost: Entity  </h3>
 Represent a table within the database. Room creates a table for each class that has @Entity annotation, the fields in the class correspond to columns in the table. Therefore, the entity classes tend to be small model classes that do not contain any logic
